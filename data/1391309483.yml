@@ -1,0 +1,9 @@
+---
+:body: blah
+:user: tatum
+:acknowledgments:
+- !ruby/object:Acknowledge
+  user: tatum
+  created_at: !ruby/object:DateTime 2014-02-02 03:27:01.000000000 Z
+:created_at: !ruby/object:DateTime 2014-02-02 02:51:23.000000000 Z
+:file_name: 1391309483.yml
