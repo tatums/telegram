@@ -15,6 +15,13 @@ describe Message do
     end
   end
 
+  describe 'Message#not_acknowledged' do
+    it 'should not return acknowledged messages' do
+      Message.any_instance.stub(:acknowledged?).and_return(true)
+      expect(Message.not_acknowledged).to be_empty
+    end
+  end
+
   describe '#save' do
     context "When a message with the body of test" do
       let(:message) { Message.new }
