@@ -3,13 +3,11 @@ class Message
 
   attribute :body, String
   attribute :user, String
-  attribute :acknowledgments, Array[Acknowledge]
   attribute :created_at, DateTime
-
-  attr_accessor :file_name
+  attribute :file_name, String
 
   def self.all
-    Dir.glob("#{Telegram.data_root}*.yml").map do |file|
+    Dir.glob("#{Telegram.messages_root}/*.yml").map do |file|
       self.new(
         YAML.load_file(file)
       )
@@ -17,20 +15,22 @@ class Message
   end
 
   def save
-    x = file
-    x.write(merged_attributes.to_yaml)
-    x.close
+    File.open(file, "w") do |f|
+      f.write(merged_attributes.to_yaml)
+    end
   end
 
-  def ack
-    unless acknowledgments.map(&:user).include?(Telegram.user)
-      acknowledgments.push(
-        Acknowledge.new(
-          user: Telegram.user,
-          created_at: now)
-      )
-      self.save
+  def acknowledge!
+    unless acknowledged?
+      ack = Acknowledge.new(user: Telegram.user,
+                            created_at: now,
+                            file_name: file_name)
+      ack.save
     end
+  end
+
+  def acknowledged?
+    File.exists?(acknowledgment_file)
   end
 
   private
@@ -39,28 +39,26 @@ class Message
     attributes.merge!(
       {
         user: Telegram.user,
-        created_at: _created_at,
-        file_name: file_name
+        created_at: now,
+        file_name: _file_name
       }
     )
   end
 
-  def _created_at
-    created_at || now
-  end
-
   def now
-    Time.now.utc.to_s
+    @now ||= Time.now.utc.to_s
   end
 
-  def file_name
+  def _file_name
     @file_name ||= [ Time.now.utc.to_i, '.yml'].join
   end
 
   def file
-    File.open(
-      [Telegram.data_root, file_name].join, 'w+'
-    )
+    File.join(Telegram.messages_root, _file_name)
+  end
+
+  def acknowledgment_file
+    File.join(Telegram.acknowledgments_root, file_name)
   end
 
 end

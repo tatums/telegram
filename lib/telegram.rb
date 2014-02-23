@@ -9,29 +9,39 @@ require "telegram/message"
 
 module Telegram
 
+  class << self
+    attr_accessor :configuration
+  end
+
+  def self.configure
+    self.configuration ||= Configuration.new
+    yield(configuration)
+  end
+
+  class Configuration
+    attr_accessor :user, :messages_root, :acknowledgments_root
+  end
+
+  def self.root
+    File.expand_path("../..", __FILE__)
+  end
+
   def self.user
-    ENV['USER'] || ENV['USERNAME']
+    configuration.user
   end
 
-  def self.lib_root
-    File.dirname(__FILE__)
+  def self.messages_root
+    configuration.messages_root
   end
 
-  def self.messages
-    Dir.glob("#{data_root}*.yml").map do |file|
-      YAML.load_file(file)
-    end
+  def self.acknowledgments_root
+    configuration.acknowledgments_root
   end
 
-  def self.file
-    File.open(file_location, "r")
-  end
+  Telegram.configure { |config|
+    config.user                 = ENV['USER'] || ENV['USERNAME']
+    config.messages_root        = File.join(root, "/data/messages")
+    config.acknowledgments_root = File.join(root, "/data/acknowledgments")
+  }
 
-  def self.file_location
-    "#{lib_root}/../data/messages.yml"
-  end
-
-  def self.data_root
-    "#{lib_root}/../data/"
-  end
 end

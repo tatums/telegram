@@ -14,7 +14,6 @@ class Messages < Thor
       m.acknowledgments.each {|a|
         puts "#{a.user}"
       }
-
     end
 
   end
