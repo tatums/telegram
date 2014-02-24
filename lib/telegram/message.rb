@@ -14,6 +14,10 @@ class Message
     end
   end
 
+  def self.not_acknowledged
+    all.reject(&:acknowledged?)
+  end
+
   def save
     File.open(file, "w") do |f|
       f.write(merged_attributes.to_yaml)
