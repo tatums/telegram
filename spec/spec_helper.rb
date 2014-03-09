@@ -2,9 +2,8 @@ require 'telegram'
 require 'pry'
 
 Telegram.configure { |config|
-  config.user                 = "Tatum"
-  config.messages_root        = File.join(Telegram.root, "/spec/fixtures/messages")
-  config.acknowledgments_root = File.join(Telegram.root, "/spec/fixtures/acknowledgments")
+  config.user      = "Tatum"
+  config.data_root = File.join(Telegram.root, "/spec/fixtures")
 }
 
 RSpec.configure do |config|
