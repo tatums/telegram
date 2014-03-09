@@ -7,7 +7,7 @@ class Messages < Thor
   def pending
     system("clear")
 
-    if (messages = Message.not_acknowledged).any?
+    if (messages = Telegram::Message.not_acknowledged).any?
       choose do |menu|
         say('Pending Acknowledgements ->')
         menu.prompt = "\nWhich would you like to Acknowledge?"
