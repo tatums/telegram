@@ -7,6 +7,7 @@ require "telegram/acknowledge"
 require "telegram/user"
 require "telegram/message"
 require "telegram/middleware"
+require "telegram/cli/app"
 
 module Telegram
 
