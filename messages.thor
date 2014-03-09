@@ -24,6 +24,10 @@ class Messages < Thor
           messages.map(&:acknowledge!)
           say 'All Messages Acknowledged!'
         end
+
+        menu.choice('Exit') do
+          say 'Exiting the system.'
+        end
       end
     end
   end
