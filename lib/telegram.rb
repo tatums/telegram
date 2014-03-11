@@ -1,6 +1,7 @@
 require 'yaml'
 require 'virtus'
 require "colorize"
+require "fileutils"
 
 require "telegram/util"
 require "telegram/version"
@@ -9,6 +10,7 @@ require "telegram/user"
 require "telegram/message"
 require "telegram/middleware"
 require "telegram/cli/app"
+
 
 module Telegram
 
@@ -49,6 +51,7 @@ if settings = YAML.load_file("config/telegram.yml")
     config.messages_path        = File.expand_path(settings["messages_path"])
     config.acknowledgments_path = File.expand_path(settings["acknowledgments_path"])
   end
+  Telegram::Util.setup_directories
 end
 
 require 'telegram/railtie' if defined?(Rails)
