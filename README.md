@@ -1,7 +1,6 @@
 # Telegram
-
-A messageing tool.  This gem is mean to be added to a rack prodject where
-you would need to communicate with a team of developers. 
+A messageing tool.  This gem is mean to be added to a rack project where
+you would need to communicate with a team.
 
 ## Installation
 
@@ -17,46 +16,66 @@ Or install it yourself as:
 
     $ gem install telegram
 
+
+## Configuration
+
+This gem will be looking for a config file.
+
+create this file config/telegram.yml
+
+you need to define two keys messages_path and acknowledgments_path
+
+```
+messages_path: "telegram/messages"
+acknowledgments_path: "tmp/telegram/acknowledgments"
+```
+
+### Messages
+When you create a message a yaml file is created. This file will be
+commited to your git repo.
+
+### Acknowledgments
+When you acknowlege a message a file is created. This file does not get
+commited to the repo.  It is important for this file/directory to be .gitignored
+
+
 ## Usage
 
-Get all messages
+This gem include a binary - so you can call telegram from the bash
+prompt.
+
+
+### All messages
 
 ```ruby
-Message.all
-=>[#<Message:0x00000101404ff0
-  @body="blah test",
-  @created_at=
-   #<DateTime: 2014-02-12T02:53:58+00:00 ((2456701j,10438s,0n),+0s,2299161j)>,
-  @file_name="1392173638.yml",
-  @user="tatum">,
- #<Message:0x000001013ee778
-  @body="hahahah ahahah ahaha",
-  @created_at=
-   #<DateTime: 2014-02-22T16:24:28+00:00 ((2456711j,59068s,0n),+0s,2299161j)>,
-  @file_name="1393086268.yml",
-  @user="tatum">]
+telegram all
 ```
 
 Create a new Message
 
 ```ruby
-message = Message.new(body: 'This is a test')
-message.save
+telegram new "This is an important message."
+Message created!
 ```
 
-Acknowledge a message
+use the console
 ```ruby
-message = Message.all.find { |m| m.file_name == "1393086268.yml" }
-message.acknowledge!
+telegram console
+
+1. 03/11/2014 - This is an important message.
+2. quit
+3. help
+
+Please choose an option..
 ```
 
 ### Configuration
-You can set the user, messages_root, and acknowlegments_root by passing the following block.
+You can set the user, messages_path, and acknowlegments_path by passing the following block.
 ```ruby
 Telegram.configure { |config|
   config.user                 = "Dr. Peter Venkman"
-  config.messages_root        = File.join('.', "/data/messages")
-  config.acknowledgments_root = File.join('.', "/data/acknowledgments")
+  config.messages_path        = File.join('.', "/data/messages")
+  config.acknowledgments_path = File.join('.', "/data/acknowledgments")
 }
 ```
 

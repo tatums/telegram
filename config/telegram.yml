@@ -1,0 +1,2 @@
+messages_path: "spec/fixtures/telegram/messages"
+acknowledgments_path: "spec/fixtures/telegram/acknowledgments"

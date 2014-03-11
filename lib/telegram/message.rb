@@ -8,7 +8,7 @@ module Telegram
     attribute :file_name, String
 
     def self.all
-      Dir.glob("#{Telegram.messages_root}/*.yml").map do |file|
+      Dir.glob("#{Telegram.messages_path}/*.yml").map do |file|
         self.new(
           YAML.load_file(file)
         )
@@ -59,11 +59,11 @@ module Telegram
     end
 
     def file
-      File.join(Telegram.messages_root, _file_name)
+      File.join(Telegram.messages_path, _file_name)
     end
 
     def acknowledgment_file
-      File.join(Telegram.acknowledgments_root, file_name)
+      File.join(Telegram.acknowledgments_path, file_name)
     end
 
   end

@@ -1,10 +1,12 @@
 require 'telegram'
 require 'pry'
 
-Telegram.configure { |config|
+Telegram.configure do |config|
   config.user      = "Tatum"
-  config.data_root = File.join(Telegram.root, "/spec/fixtures")
-}
+  config.messages_path        = "spec/fixtures/telegram/messages"
+  config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
+end
+
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true

@@ -15,7 +15,7 @@ module Telegram
     private
 
     def file
-      File.join(Telegram.acknowledgments_root, file_name)
+      File.join(Telegram.acknowledgments_path, file_name)
     end
 
     def merged_attributes

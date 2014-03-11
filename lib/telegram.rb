@@ -1,5 +1,6 @@
 require 'yaml'
 require 'virtus'
+require "colorize"
 
 require "telegram/util"
 require "telegram/version"
@@ -21,36 +22,33 @@ module Telegram
   end
 
   class Configuration
-    attr_accessor :user, :data_root
-  end
-
-  def self.user
-    configuration.user
+    attr_accessor :user, :messages_path, :acknowledgments_path
   end
 
   def self.root
     File.expand_path("../..", __FILE__)
   end
 
-  def self.data_root
-    configuration.data_root
+  def self.user
+    configuration.user
   end
 
-  def self.messages_root
-    File.join(data_root + "/telegram/messages")
+  def self.messages_path
+    configuration.messages_path
   end
 
-  def self.acknowledgments_root
-    File.join(data_root + "/telegram/acknowledgments")
+  def self.acknowledgments_path
+    configuration.acknowledgments_path
   end
+  ## TODO - ADD Timezone setting
+end
 
-  ## DOC - These are setting the defaults for development
-  ## They will be changed when added to an app.
-  Telegram.configure { |config|
+if settings = YAML.load_file("config/telegram.yml")
+  Telegram.configure do |config|
     config.user                 = ENV['USER'] || ENV['USERNAME']
-    config.data_root            = File.join(root, "/data/telegram")
-  }
-
+    config.messages_path        = File.expand_path(settings["messages_path"])
+    config.acknowledgments_path = File.expand_path(settings["acknowledgments_path"])
+  end
 end
 
 require 'telegram/railtie' if defined?(Rails)

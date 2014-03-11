@@ -10,7 +10,7 @@ module Telegram
 
         it "should create a file with the name ok.yml" do
           expect(File).to receive(:open).with(
-            Telegram.acknowledgments_root + "/123.yml", "w"
+            Telegram.acknowledgments_path + "/123.yml", "w"
           ).and_return(
             double(File, write: nil)
           )
