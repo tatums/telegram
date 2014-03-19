@@ -10,7 +10,7 @@ require "telegram/user"
 require "telegram/message"
 require "telegram/middleware"
 require "telegram/cli/app"
-
+require "rails"
 
 module Telegram
 
@@ -42,17 +42,10 @@ module Telegram
   def self.acknowledgments_path
     configuration.acknowledgments_path
   end
-  ## TODO - ADD Timezone setting
 end
 
-if settings = YAML.load_file("config/telegram.yml")
-  Telegram.configure do |config|
-    config.user                 = ENV['USER'] || ENV['USERNAME']
-    config.messages_path        = File.expand_path(settings["messages_path"])
-    config.acknowledgments_path = File.expand_path(settings["acknowledgments_path"])
-  end
-  Telegram::Util.setup_directories
+#Telegram::Util.setup_directories
+if defined?(Rails)
+  require 'telegram/railtie'
 end
-
-require 'telegram/railtie' if defined?(Rails)
 
