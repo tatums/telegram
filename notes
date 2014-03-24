@@ -1,8 +1,10 @@
 RAODMAP
 
+[ ] - Allow users to accept in browser
 [ ] - ADD Timezone support via config
+[ ] - Allow users to create messages in browser
+[ ] - Add future reminders
+[ ] -
 [ ] - Remove RAILS dependency
-[ ] -
-[ ] -
 [ ] - Add local user config for acknowledgements
 [ ] - Add local user config for Timezone support (colocation)
