@@ -2,12 +2,18 @@ require 'spec_helper'
 
 module Telegram
   describe Acknowledge do
+
+    before do
+      Telegram.configure do |config|
+        config.user      = "Tatum"
+        config.messages_path        = "spec/fixtures/telegram/messages"
+        config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
+      end
+    end
+
     describe '#save' do
-
       let(:acknowledge) { Acknowledge.new(file_name: "123.yml") }
-
       context "when setting the file name" do
-
         it "should create a file with the name ok.yml" do
           expect(File).to receive(:open).with(
             Telegram.acknowledgments_path + "/123.yml", "w"

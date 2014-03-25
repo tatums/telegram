@@ -6,6 +6,15 @@ require 'spec_helper'
 ## This was changed in the spec helper
 module Telegram
   describe Message do
+
+    before do
+      Telegram.configure do |config|
+        config.user      = "Tatum"
+        config.messages_path        = "spec/fixtures/telegram/messages"
+        config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
+      end
+    end
+
     describe 'Message#all' do
       it 'should return an array' do
         expect(Message.all).to be_an_instance_of(Array)

@@ -36,15 +36,15 @@ module Telegram
   end
 
   def self.messages_path
-    configuration.messages_path
+    configuration.try(:messages_path) || "telegram/messages"
   end
 
   def self.acknowledgments_path
-    configuration.acknowledgments_path
+    configuration.try(:acknowledgments_path) || "tmp/telgram/acknowledgments"
   end
 end
 
-#Telegram::Util.setup_directories
+
 if defined?(Rails)
   require 'telegram/railtie'
 end

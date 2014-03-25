@@ -1,16 +1,31 @@
 require 'spec_helper'
 
-require "dummy_rails/config/environment"
-
 describe Telegram::Railtie do
+  before do
+    Telegram.configure do |config|
+      config.user      = "Tatum"
+      config.messages_path        = "telegram/messages"
+      config.acknowledgments_path = "tmp/telegram/acknowledgments"
+    end
+  end
+
   context "it has pending messages" do
     it "raises PendingMessageError" do
 
       Telegram::Message.stub(:not_acknowledged).and_return([5])
-
-      expect{DummyRails::Application.initialize!}.to raise_error(Telegram::PendingMessageError)
+      expect{
+        require "dummy_rails/config/environment"
+      }.to raise_error(
+        Telegram::PendingMessageError
+      )
     end
   end
   context "it does NOT have pending messages" do
+   it "does NOT raise PendingMessageError" do
+      Telegram::Message.stub(:not_acknowledged).and_return([])
+      expect{
+        require "dummy_rails/config/environment"
+      }.not_to raise_error
+    end
   end
 end
