@@ -10,6 +10,7 @@ require "telegram/user"
 require "telegram/message"
 require "telegram/middleware"
 require "telegram/cli/app"
+require "telegram/pending_message"
 require "rails"
 
 module Telegram
@@ -44,8 +45,5 @@ module Telegram
   end
 end
 
-
-if defined?(Rails)
-  require 'telegram/railtie'
-end
+require 'telegram/rails' if defined?(Rails)
 

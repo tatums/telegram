@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Telegram::Railtie do
+describe Telegram::Rails do
   before do
     Telegram.configure do |config|
       config.user      = "Tatum"

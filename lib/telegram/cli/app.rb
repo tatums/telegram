@@ -57,14 +57,7 @@ module Telegram
             menu.choice(:quit, "Exit program.") { exit }
           end
         end
-
       end
-
-
-
-
-
-
     end
   end
 end
