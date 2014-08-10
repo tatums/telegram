@@ -57,8 +57,8 @@ end
 if settings = File.exists?("config/telegram.yml") && YAML.load_file("config/telegram.yml")
   Telegram.configure do |config|
     config.user                 = ENV['USER'] || ENV['USERNAME']
-    config.messages_path        = File.expand_path(settings["messages_path"])
-    config.acknowledgments_path = File.expand_path(settings["acknowledgments_path"])
+    config.messages_path        = settings["messages_path"]
+    config.acknowledgments_path = settings["acknowledgments_path"]
   end
 end
 

@@ -42,6 +42,11 @@ module Telegram
         puts "#{messages.size} messages cleared"
       end
 
+      desc "install", "Installs telegram"
+      def install
+        Telegram::Util.create_config_file
+      end
+
       desc "console", "runs an interactive console"
       def console
         loop do

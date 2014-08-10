@@ -22,5 +22,22 @@ module Telegram
 
     end
 
+    describe "#create_config_file" do
+      context "When a config/telegram.yml file does not exist" do
+        it "returns creates a new file" do
+          File.stub(:exists?).and_return(false)
+          expect(File).to receive(:open)
+          Telegram::Util.create_config_file
+        end
+      end
+      context "When a config/telegram.yml file exists" do
+        it "returns nil" do
+          File.stub(:exists?).and_return(true)
+          expect(File).to_not receive(:open)
+          Telegram::Util.create_config_file
+        end
+      end
+    end
+
   end
 end
