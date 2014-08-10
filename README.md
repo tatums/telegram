@@ -58,8 +58,8 @@ Please choose an option..
 ##How does it work?
 
 ### Messages
-When you create a message a yaml file is created. This file will be
-commited to your git repo.
+When you create a message a yml file is created in telegram/messages. This file will be
+commited to your git repo with your code.  When another developer pulls down your code, they will also receive your message file.  The next time they use the app. They will need to acknowlege your message before they can continue.  
 
 ### Acknowledgments
 When you acknowlege a message a file is created. This file does not get
