@@ -51,8 +51,6 @@ module Telegram
   def self.time_zone
     configuration.try(:time_zone) || "America/Chicago"
   end
-
-
 end
 
 

@@ -1,3 +1,5 @@
+require 'rack/response'
+
 module Telegram
   class Middleware
     def initialize(app)
@@ -5,20 +7,32 @@ module Telegram
     end
 
     def call(env)
-      messages = Message.not_acknowledged
-      if messages.any?
-
-        items = messages.map{ |m|
-          "<li>
-              From: #{m.user}<br />
-              Date: #{m.created_at.strftime("%m/%d/%Y at %l:%M %P")}
-              <p>#{m.body}</p>
-          </li>"
-        }.join
-
-        [200, {"Content-Type" => "text/html"}, [ body(items) ] ]
+      req = Rack::Request.new(env)
+      if req.post?
+        file_name = req.params["message_file_name"]
+        message = Message.all.find { |f| f.file_name == file_name }
+        message.acknowledge!
+        response = Rack::Response.new
+        response.redirect "/"
+        response.finish
       else
-        @app.call(env)
+        messages = Message.not_acknowledged
+        if messages.any?
+          items = messages.map do |m|
+            "<li>
+                From: #{m.user}<br />
+                Date: #{m.created_at.strftime("%m/%d/%Y at %l:%M %P")}
+                <p>#{m.body}</p>
+                <form action='telegram' method='POST'>
+                  <input type=hidden name='message_file_name' value=#{m.file_name}>
+                  <input type='submit' value='Ack!'>
+                </form>
+            </li>"
+          end.join
+          [200, {"Content-Type" => "text/html"}, [ body(items) ] ]
+        else
+          @app.call(env)
+        end
       end
     end
 
