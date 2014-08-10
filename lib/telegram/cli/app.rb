@@ -1,10 +1,11 @@
 require "thor"
-require "pry"
+#require "pry"
 require "highline/import"
 
 module Telegram
   module Cli
     class App < Thor
+
       desc "all", "Display all messages"
       def all
         messages = Telegram::Message.all
@@ -27,8 +28,12 @@ module Telegram
 
       desc "new", "Create a new message"
       def new(body)
-        Telegram::Message.new(body: body).save
-        puts("Message created!")
+        if Telegram::Util.valid_install?
+          Telegram::Message.new(body: body).save
+          puts("Message created!")
+        else
+          puts "setup your config"
+        end
       end
 
       desc "console", "runs an interactive console"
