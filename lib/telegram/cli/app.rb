@@ -13,6 +13,7 @@ module Telegram
           user = "[#{m.user}]".colorize(:blue)
           puts("#{f_date} #{m.body} #{user}" )
         end
+        puts "#{messages.size} messages"
       end
 
       desc "pending", "Display all messages"
@@ -23,12 +24,22 @@ module Telegram
           user = "[#{m.user}]".colorize(:blue)
           puts("#{f_date} #{m.body} #{user}" )
         end
+        puts "#{messages.size} pending messages"
       end
 
       desc "new", "Create a new message"
       def new(body)
         Telegram::Message.new(body: body).save
         puts("Message created!")
+      end
+
+      desc "clear", "Clear all messages"
+      def clear
+        messages = Telegram::Message.not_acknowledged
+        messages.each do |m|
+          m.acknowledge!
+        end
+        puts "#{messages.size} messages cleared"
       end
 
       desc "console", "runs an interactive console"
