@@ -1,6 +1,6 @@
 require "thor"
-require "pry"
 require "highline/import"
+require "tzinfo"
 
 module Telegram
   module Cli
@@ -9,7 +9,7 @@ module Telegram
       def all
         messages = Telegram::Message.all
         messages.each do |m|
-          f_date = m.created_at.strftime("%m/%d/%Y at %l:%M%P").colorize(:yellow)
+          f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:yellow)
           user = "[#{m.user}]".colorize(:blue)
           puts("#{f_date} #{m.body} #{user}" )
         end
@@ -19,7 +19,7 @@ module Telegram
       def pending
         messages = Telegram::Message.not_acknowledged
         messages.each do |m|
-          f_date = m.created_at.strftime("%m/%d/%Y at %l:%M%P").colorize(:yellow)
+          f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:yellow)
           user = "[#{m.user}]".colorize(:blue)
           puts("#{f_date} #{m.body} #{user}" )
         end
@@ -36,11 +36,10 @@ module Telegram
         loop do
           choose do |menu|
             menu.shell  = true
-            #say('Pending Acknowledgements ->')
             menu.prompt = "\nPlease choose an option.."
 
             Telegram::Message.not_acknowledged.each do |m|
-              display_body = "#{m.created_at.strftime('%m/%d/%Y')} - #{m.body}"
+              display_body = "#{m.date_time.strftime('%m/%d/%Y')} - #{m.body}"
               menu.choice(display_body) do
                 m.acknowledge!
                 say 'Message Acknowledged!'

@@ -19,6 +19,11 @@ module Telegram
       all.reject(&:acknowledged?)
     end
 
+    def date_time
+      zone = TZInfo::Timezone.get(Telegram.time_zone)
+      zone.utc_to_local(created_at)
+    end
+
     def save
       File.open(file, "w") do |f|
         f.write(merged_attributes.to_yaml)
