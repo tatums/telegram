@@ -7,14 +7,19 @@ module Telegram
 
     def self.setup_directories
       [Telegram.messages_path, Telegram.acknowledgments_path].each do |path|
-        FileUtils::mkdir_p(path) unless File.exists?(path)
+        if File.exists?(path)
+          puts "#{path}".colorize(:yellow) + " already exists."
+        else
+          FileUtils::mkdir_p(path)
+          puts "#{path}".colorize(:green) + " created."
+        end
       end
     end
 
     def self.create_config_file
       file = "config/telegram.yml"
       if File.exists?(file)
-        puts "File config/telegram.yml already exists."
+        puts "#{file}".colorize(:yellow) + " already exists."
       else
         File.open(file, "w") do |f|
           f.write({messages_path:         "telegram/messages",
@@ -22,7 +27,7 @@ module Telegram
                     timezone:             "America/Chicago"}.to_yaml)
 
         end
-        puts "created file config/telegram.yml."
+        puts "#{file}".colorize(:green) + " created."
       end
     end
 

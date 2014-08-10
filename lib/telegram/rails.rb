@@ -1,7 +1,6 @@
 module Telegram
   class Rails < Rails::Railtie
     initializer "telegram.configure_rails_initialization" do |app|
-      Telegram::Util.setup_directories
       app.middleware.use Middleware
     end
 

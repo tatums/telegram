@@ -3,6 +3,8 @@ require 'spec_helper'
 module Telegram
   describe Util do
 
+    before(:each) { Util.stub(:puts) }
+
     describe "#setup_directories" do
       context "When directories exists" do
         it "should not create the directories" do

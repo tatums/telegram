@@ -45,6 +45,7 @@ module Telegram
       desc "install", "Installs telegram"
       def install
         Telegram::Util.create_config_file
+        Telegram::Util.setup_directories
       end
 
       desc "console", "runs an interactive console"
