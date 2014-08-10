@@ -38,6 +38,40 @@ commited to your git repo.
 When you acknowlege a message a file is created. This file does not get
 commited to the repo.  It is important for this file/directory to be .gitignored
 
+### Timezone
+
+```
+["America/New_York",
+ "America/Detroit",
+ "America/Kentucky/Louisville",
+ "America/Kentucky/Monticello",
+ "America/Indiana/Indianapolis",
+ "America/Indiana/Vincennes",
+ "America/Indiana/Winamac",
+ "America/Indiana/Marengo",
+ "America/Indiana/Petersburg",
+ "America/Indiana/Vevay",
+ "America/Chicago",
+ "America/Indiana/Tell_City",
+ "America/Indiana/Knox",
+ "America/Menominee",
+ "America/North_Dakota/Center",
+ "America/North_Dakota/New_Salem",
+ "America/North_Dakota/Beulah",
+ "America/Denver",
+ "America/Boise",
+ "America/Phoenix",
+ "America/Los_Angeles",
+ "America/Anchorage",
+ "America/Juneau",
+ "America/Sitka",
+ "America/Yakutat",
+ "America/Nome",
+ "America/Adak",
+ "America/Metlakatla",
+ "Pacific/Honolulu"]
+```
+
 
 ## Usage
 

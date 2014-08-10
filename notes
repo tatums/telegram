@@ -6,3 +6,12 @@ RAODMAP
 [ ] -
 [ ] - Add local user config for acknowledgements
 [ ] - Add local user config for Timezone support (colocation)
+
+
+TZInfo::Country.get('US').zone_identifiers
+Time.zone_offset("CST")
+
+
+date = Telegram::Message.all.first.created_at
+tz = TZInfo::Timezone.get('America/New_York')
+tz.utc_to_local(date)

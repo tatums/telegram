@@ -9,7 +9,7 @@ module Telegram
 
     before do
       Telegram.configure do |config|
-        config.user      = "Tatum"
+        config.user                 = "Tatum"
         config.messages_path        = "spec/fixtures/telegram/messages"
         config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
       end
@@ -75,6 +75,7 @@ module Telegram
       end
     end
 
+
     describe "#acknowledged?" do
       let(:message) do
         Message.all.find{ |f| f['file_name'] == file }
@@ -93,7 +94,23 @@ module Telegram
           expect(message.acknowledged?).to be_false
         end
       end
+    end
 
+    describe "#date_time" do
+      let(:message) do
+        Message.all.find{ |f| f['file_name'] == file }
+      end
+      let(:file) {"1391304560.yml"}
+      context "when timezone is set as `Pacific/Honolulu`" do
+        it "returns 2014-02-01T20:07:16+00:00" do
+          Telegram.configure { |c| c.time_zone =  "Pacific/Honolulu" }
+          expect(message.date_time).to eq(DateTime.new(2014,2,1,16,07,16))
+        end
+        it "returns 2014-02-01T16:07:16+00:00" do
+          Telegram.configure { |c| c.time_zone =  "America/Chicago" }
+          expect(message.date_time).to eq(DateTime.new(2014,2,1,20,07,16))
+        end
+      end
     end
 
   end
