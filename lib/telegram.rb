@@ -43,6 +43,11 @@ module Telegram
   def self.messages_path
     configuration.try(:messages_path) || "telegram/messages"
   end
+
+  def self.acknowledgments_path
+    configuration.try(:acknowledgments_path) || "tmp/telegram/acknowledgments"
+  end
+
   def self.time_zone
     configuration.time_zone
   end
@@ -50,14 +55,6 @@ module Telegram
 
 end
 
-if settings = File.exists?("config/telegram.yml") && YAML.load_file("config/telegram.yml")
-  Telegram.configure do |config|
-    config.user                 = ENV['USER'] || ENV['USERNAME']
-    config.messages_path        = "telegram/messages"
-    config.acknowledgments_path = "tmp/telegram/acknowledgments"
-    config.time_zone            = "America/Chicago"
-  end
-end
 
 if settings = File.exists?("config/telegram.yml") && YAML.load_file("config/telegram.yml")
   Telegram.configure do |config|
