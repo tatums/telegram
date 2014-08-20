@@ -6,7 +6,7 @@ module Telegram
     end
 
     def self.setup_directories
-      [Telegram.messages_path, Telegram.acknowledgments_path].each do |path|
+      [Telegram.messages_path, Telegram.acknowledgments_path, "./config"].each do |path|
         if File.exists?(path)
           puts "#{path}".colorize(:yellow) + " already exists."
         else
