@@ -16,7 +16,7 @@ module Telegram
         puts "#{messages.size} messages"
       end
 
-      desc "pending", "Display all messages"
+      desc "pending", "Display all pending messages"
       def pending
         messages = Telegram::Message.not_acknowledged
         messages.each do |m|
@@ -27,9 +27,23 @@ module Telegram
         puts "#{messages.size} pending messages"
       end
 
+      desc "future", "Display all future messages"
+      def future
+        messages = Telegram::Message.not_acknowledged(future: true)
+        messages.each do |m|
+          f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:magenta)
+          user = "[#{m.user}]".colorize(:blue)
+          puts("#{f_date} #{m.body} #{user}" )
+        end
+        puts "#{messages.size} pending messages"
+      end
+
+      desc "new", "Create a new message"
+      options :f => :numeric
       desc "new", "Create a new message"
       def new(body)
-        Telegram::Message.new(body: body).save
+        args = Telegram::Message.excute_options(options).merge(body: body)
+        Telegram::Message.new(args).save
         puts("Message created!")
       end
 
@@ -44,8 +58,8 @@ module Telegram
 
       desc "install", "Installs telegram"
       def install
-        Telegram::Util.create_config_file
         Telegram::Util.setup_directories
+        Telegram::Util.create_config_file
       end
 
       desc "console", "runs an interactive console"
