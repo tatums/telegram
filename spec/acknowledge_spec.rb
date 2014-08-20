@@ -27,9 +27,9 @@ module Telegram
 
       it 'should write a file and merge in additional keys' do
         file = double('file')
-        File.should_receive(:open).and_yield(file)
+        expect(File).to receive(:open).and_yield(file)
 
-        file.should_receive(:write).with do |args|
+        expect(file).to receive(:write) do |args|
           options = YAML::load(args)
           [:user, :created_at, :file_name].each do |item|
             expect(options.keys).to include(item)

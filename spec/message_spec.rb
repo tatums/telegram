@@ -38,7 +38,7 @@ module Telegram
         it 'should write a file and merge in additional keys' do
           file = double(File)
           expect(File).to receive(:open).and_yield(file)
-          file.should_receive(:write).with do |args|
+          expect(file).to receive(:write) do |args|
             options = YAML::load(args)
             [:body, :user, :created_at].each do |item|
               expect(options.keys).to include(item)
@@ -84,14 +84,14 @@ module Telegram
       context "given a user has acknowledged a message" do
         let(:file) {"1391304560.yml"}
         it 'returns true' do
-          expect(message.acknowledged?).to be_true
+          expect(message.acknowledged?).to be true
         end
       end
 
       context "given a user has not acknowledged a message" do
         let(:file) {"2391304560.yml"}
         it 'returns false' do
-          expect(message.acknowledged?).to be_false
+          expect(message.acknowledged?).to be false
         end
       end
     end

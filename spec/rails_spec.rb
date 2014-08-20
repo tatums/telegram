@@ -11,10 +11,9 @@ describe Telegram::Rails do
 
   context "it has pending messages" do
     it "raises PendingMessageError" do
-
-      Telegram::Message.stub(:not_acknowledged).and_return([5])
+      allow(Telegram::Message).to receive(:not_acknowledged).and_return([5])
       expect{
-        require "dummy_rails/config/environment"
+        load "dummy_rails/config/environment.rb"
       }.to raise_error(
         Telegram::PendingMessageError
       )
@@ -22,9 +21,9 @@ describe Telegram::Rails do
   end
   context "it does NOT have pending messages" do
    it "does NOT raise PendingMessageError" do
-      Telegram::Message.stub(:not_acknowledged).and_return([])
+      allow(Telegram::Message).to receive(:not_acknowledged).and_return([])
       expect{
-        require "dummy_rails/config/environment"
+        load "dummy_rails/config/environment.rb"
       }.not_to raise_error
     end
   end
