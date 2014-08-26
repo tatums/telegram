@@ -9,7 +9,7 @@ module Telegram
 
     before do
       Telegram.configure do |config|
-        config.user      = "Tatum"
+        config.user                 = "Tatum"
         config.messages_path        = "spec/fixtures/telegram/messages"
         config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
       end
@@ -38,7 +38,7 @@ module Telegram
         it 'should write a file and merge in additional keys' do
           file = double(File)
           expect(File).to receive(:open).and_yield(file)
-          file.should_receive(:write).with do |args|
+          expect(file).to receive(:write) do |args|
             options = YAML::load(args)
             [:body, :user, :created_at].each do |item|
               expect(options.keys).to include(item)
@@ -75,6 +75,7 @@ module Telegram
       end
     end
 
+
     describe "#acknowledged?" do
       let(:message) do
         Message.all.find{ |f| f['file_name'] == file }
@@ -83,17 +84,33 @@ module Telegram
       context "given a user has acknowledged a message" do
         let(:file) {"1391304560.yml"}
         it 'returns true' do
-          expect(message.acknowledged?).to be_true
+          expect(message.acknowledged?).to be true
         end
       end
 
       context "given a user has not acknowledged a message" do
         let(:file) {"2391304560.yml"}
         it 'returns false' do
-          expect(message.acknowledged?).to be_false
+          expect(message.acknowledged?).to be false
         end
       end
+    end
 
+    describe "#date_time" do
+      let(:message) do
+        Message.all.find{ |f| f['file_name'] == file }
+      end
+      let(:file) {"1391304560.yml"}
+      context "when timezone is set as `Pacific/Honolulu`" do
+        it "returns 2014-02-01T20:07:16+00:00" do
+          Telegram.configure { |c| c.time_zone =  "Pacific/Honolulu" }
+          expect(message.date_time).to eq(DateTime.new(2014,2,1,16,07,16))
+        end
+        it "returns 2014-02-01T16:07:16+00:00" do
+          Telegram.configure { |c| c.time_zone =  "America/Chicago" }
+          expect(message.date_time).to eq(DateTime.new(2014,2,1,20,07,16))
+        end
+      end
     end
 
   end
