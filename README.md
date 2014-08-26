@@ -1,5 +1,5 @@
 # Telegram
-A messageing tool.  This gem is mean to be added to a rack project where
+A messageing tool.  This gem is meant to be added to a rack project where
 you would need to communicate with a team.
 
 ## Installation
@@ -17,26 +17,9 @@ Or install it yourself as:
     $ gem install telegram
 
 
-## Configuration
+Install config/telegram.yml and other folders
 
-This gem will be looking for a config file.
-
-create this file config/telegram.yml
-
-you need to define two keys messages_path and acknowledgments_path
-
-```
-messages_path: "telegram/messages"
-acknowledgments_path: "tmp/telegram/acknowledgments"
-```
-
-### Messages
-When you create a message a yaml file is created. This file will be
-commited to your git repo.
-
-### Acknowledgments
-When you acknowlege a message a file is created. This file does not get
-commited to the repo.  It is important for this file/directory to be .gitignored
+    $ telegram install
 
 ### Timezone
 
@@ -85,12 +68,14 @@ prompt.
 telegram all
 ```
 
+
 Create a new Message
 
 ```ruby
 telegram new "This is an important message."
 Message created!
 ```
+
 
 use the console
 ```ruby
@@ -103,15 +88,17 @@ telegram console
 Please choose an option..
 ```
 
-### Configuration
-You can set the user, messages_path, and acknowlegments_path by passing the following block.
-```ruby
-Telegram.configure { |config|
-  config.user                 = "Dr. Peter Venkman"
-  config.messages_path        = File.join('.', "/data/messages")
-  config.acknowledgments_path = File.join('.', "/data/acknowledgments")
-}
-```
+
+##How does it work?
+
+### Messages
+When you create a message a yml file is created in telegram/messages. This file will be
+commited to your git repo with your code.  When another developer pulls down your code, they will also receive your message file.  The next time they use the app. They will need to acknowlege your message before they can continue.  
+
+### Acknowledgments
+When you acknowlege a message a file is created. This file does not get
+commited to the repo.  It is important for this file/directory to be .gitignored
+
 
 
 ## Contributing
