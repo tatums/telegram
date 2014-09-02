@@ -17,9 +17,10 @@ Feature: Developer Adds Message
     Then I should see "you need to do this" in the message list
     And I should have "1" pending message
 
-  Scenario: Creating message without future flag
-    Given I run `telegram new "you need to do this"`
-    Given I run `telegram new "no you do it"`
+  Scenario: Creating message WITH future flag
+    Given I run `telegram new "you need to do this" -f 3`
     And I run `telegram pending`
-    And I should have "2" pending message
+    Then I should have "0" pending message
+    And I run `telegram future`
+    Then I should have "1" pending message
 

@@ -24,6 +24,7 @@ module Telegram
       Configuration.new(messages_path: "telegram/messages",
                         acknowledgments_path: "tmp/telegram/acknowledgments",
                         timezone: "America/Chicago")
+    yield(configuration) if block_given?
   end
 
   class Configuration
@@ -34,7 +35,7 @@ module Telegram
 
     def initialize(settings)
       settings = YAML.load_file("config/telegram.yml") if File.exists?("config/telegram.yml")
-      @user = ENV['USER'] || ENV['USERNAME']
+      @user = settings[:user] || ENV['USER'] || ENV['USERNAME']
       @messages_path = settings[:messages_path]
       @acknowledgments_path = settings[:acknowledgments_path]
       @time_zone = settings[:timezone]
@@ -66,5 +67,4 @@ Telegram.configure
 
 if defined?(Rails)
   require 'telegram/rails'
-  require "rails"
 end

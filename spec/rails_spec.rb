@@ -1,4 +1,6 @@
 require 'spec_helper'
+require "rails"
+require "telegram/rails"
 
 describe Telegram::Rails do
   before do
