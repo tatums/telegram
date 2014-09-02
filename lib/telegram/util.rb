@@ -22,9 +22,10 @@ module Telegram
         puts "#{file}".colorize(:yellow) + " already exists."
       else
         File.open(file, "w") do |f|
-          f.write({messages_path:         "telegram/messages",
-                    acknowledgments_path: "tmp/telegram/acknowledgments",
-                    timezone:             "America/Chicago"}.to_yaml)
+          f.write({ user:                  Telegram.user,
+                    messages_path:         Telegram.messages_path,
+                    acknowledgments_path:  Telegram.acknowledgments_path,
+                    timezone:              Telegram.time_zone}.to_yaml)
 
         end
         puts "#{file}".colorize(:green) + " created."
