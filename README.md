@@ -68,11 +68,29 @@ prompt.
 telegram all
 ```
 
+### Pending Messages
+```ruby
+telegram pending
+```
 
-Create a new Message
+### Future Messages
+```ruby
+telegram future
+```
+
+### Create a new Message
 
 ```ruby
 telegram new "This is an important message."
+Message created!
+```
+
+You can also create a message for the future. A great way to help you
+remember to remove technical debt. It takes an arguement as an integer of days.
+
+
+```ruby
+telegram new "This is an important message." -f
 Message created!
 ```
 
@@ -93,7 +111,7 @@ Please choose an option..
 
 ### Messages
 When you create a message a yml file is created in telegram/messages. This file will be
-commited to your git repo with your code.  When another developer pulls down your code, they will also receive your message file.  The next time they use the app. They will need to acknowlege your message before they can continue.  
+commited to your git repo with your code.  When another developer pulls down your code, they will also receive your message file.  The next time they use the app. They will need to acknowlege your message before they can continue.
 
 ### Acknowledgments
 When you acknowlege a message a file is created. This file does not get
