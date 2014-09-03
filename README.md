@@ -1,6 +1,13 @@
-# Telegram
-A messageing tool.  This gem is meant to be added to a rack project where
-you would need to communicate with a team.
+## Why Telegram?
+
+Daily our development team was sending emails, IMs, and text messages with updates on code changes. What we found was our communication methods were broken. The correct information wasn't in front of us when you needed it. Why is everything but our app telling us about our app? So we created telegram. 
+
+Your messages, commited with your code. Didn't get that email?  Didn't see that text? Nobody misses a telegram.
+
+
+* commmunicate with messages
+* plan for removing techincal debt
+* see history of commuication
 
 ## Installation
 
