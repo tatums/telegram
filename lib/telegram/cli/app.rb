@@ -40,7 +40,6 @@ module Telegram
 
       desc "new", "Create a new message"
       options :f => :numeric
-      desc "new", "Create a new message"
       def new(body)
         args = Telegram::Message.excute_options(options).merge(body: body)
         Telegram::Message.new(args).save

@@ -1,6 +1,13 @@
-# Telegram
-A messageing tool.  This gem is meant to be added to a rack project where
-you would need to communicate with a team.
+## Why Telegram?
+
+Daily our development team was sending emails, IMs, and text messages with updates on code changes. What we found was our communication methods were broken. The correct information wasn't in front of us when you needed it. Why is everything but our app telling us about our app? So we created telegram. 
+
+Your messages, commited with your code. Didn't get that email?  Didn't see that text? Nobody misses a telegram.
+
+
+* commmunicate with messages
+* plan for removing techincal debt
+* see history of commuication
 
 ## Installation
 
@@ -68,11 +75,29 @@ prompt.
 telegram all
 ```
 
+### Pending Messages
+```ruby
+telegram pending
+```
 
-Create a new Message
+### Future Messages
+```ruby
+telegram future
+```
+
+### Create a new Message
 
 ```ruby
 telegram new "This is an important message."
+Message created!
+```
+
+You can also create a message for the future. A great way to help you
+remember to remove technical debt. It takes an arguement as an integer of days.
+
+
+```ruby
+telegram new "This is an important message." -f
 Message created!
 ```
 
@@ -93,7 +118,7 @@ Please choose an option..
 
 ### Messages
 When you create a message a yml file is created in telegram/messages. This file will be
-commited to your git repo with your code.  When another developer pulls down your code, they will also receive your message file.  The next time they use the app. They will need to acknowlege your message before they can continue.  
+commited to your git repo with your code.  When another developer pulls down your code, they will also receive your message file.  The next time they use the app. They will need to acknowlege your message before they can continue.
 
 ### Acknowledgments
 When you acknowlege a message a file is created. This file does not get
