@@ -13,7 +13,7 @@ Your messages, commited with your code. Didn't get that email?  Didn't see that 
 
 Add this line to your application's Gemfile:
 
-    gem 'telegram'
+    gem 'telegram', :git => "git://github.com/Homestyle/telegram.git"
 
 And then execute:
 
