@@ -21,9 +21,13 @@ module Telegram
       end
     end
 
-    def self.not_acknowledged(future: false)
-      operator = future ? :select : :reject
-      all.send(operator, &:acknowledged?)
+    def self.not_acknowledged(for_future: false)
+      if for_future
+        #operator = for_future ? :select : :reject
+        all.select{|m|  m.future}.select{ |m| m.future > m.now }
+      else
+        all.reject {|m| m.acknowledged? }.reject{ |m| (m.future || m.now) > m.now }
+      end
     end
 
     def self.future(integer)
@@ -61,7 +65,11 @@ module Telegram
     end
 
     def acknowledged?
-      future && future > now || File.exists?(acknowledgment_file)
+      File.exists?(acknowledgment_file)
+    end
+
+    def now
+      @now ||= Time.now.utc
     end
 
     private
@@ -74,10 +82,6 @@ module Telegram
           file_name: _file_name
         }
       )
-    end
-
-    def now
-      @now ||= Time.now.utc
     end
 
     def get_message_time

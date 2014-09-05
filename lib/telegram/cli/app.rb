@@ -29,7 +29,7 @@ module Telegram
 
       desc "future", "Display all future messages"
       def future
-        messages = Telegram::Message.not_acknowledged(future: true)
+        messages = Telegram::Message.not_acknowledged(for_future: true)
         messages.each do |m|
           f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:magenta)
           user = "[#{m.user}]".colorize(:blue)
@@ -77,6 +77,7 @@ module Telegram
             end
 
             if Telegram::Message.not_acknowledged.size > 1
+              messages = Telegram::Message.not_acknowledged
               menu.choice('All') do
                 messages.map(&:acknowledge!)
                 say 'All Messages Acknowledged!'
