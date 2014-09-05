@@ -1,6 +1,6 @@
 ## Why Telegram?
 
-Daily our development team was sending emails, IMs, and text messages with updates on code changes. What we found was our communication methods were broken. The correct information wasn't in front of us when you needed it. Why is everything but our app telling us about our app? So we created telegram. 
+Daily our development team was sending emails, IMs, and text messages with updates on code changes. What we found was our communication methods were broken. The correct information wasn't in front of us when you needed it. Why is everything but our application telling us about our application? So we created telegram.
 
 Your messages, commited with your code. Didn't get that email?  Didn't see that text? Nobody misses a telegram.
 
