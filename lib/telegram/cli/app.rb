@@ -1,6 +1,6 @@
 require "thor"
-require "pry"
 require "highline/import"
+require "tzinfo"
 
 module Telegram
   module Cli
@@ -9,26 +9,56 @@ module Telegram
       def all
         messages = Telegram::Message.all
         messages.each do |m|
-          f_date = m.created_at.strftime("%m/%d/%Y at %l:%M%P").colorize(:yellow)
+          f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:yellow)
           user = "[#{m.user}]".colorize(:blue)
           puts("#{f_date} #{m.body} #{user}" )
         end
+        puts "#{messages.size} messages"
       end
 
-      desc "pending", "Display all messages"
+      desc "pending", "Display all pending messages"
       def pending
         messages = Telegram::Message.not_acknowledged
         messages.each do |m|
-          f_date = m.created_at.strftime("%m/%d/%Y at %l:%M%P").colorize(:yellow)
+          f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:yellow)
           user = "[#{m.user}]".colorize(:blue)
           puts("#{f_date} #{m.body} #{user}" )
         end
+        puts "#{messages.size} pending messages"
+      end
+
+      desc "future", "Display all future messages"
+      def future
+        messages = Telegram::Message.not_acknowledged(for_future: true)
+        messages.each do |m|
+          f_date = m.date_time.strftime("%m/%d/%Y at %r").colorize(:magenta)
+          user = "[#{m.user}]".colorize(:blue)
+          puts("#{f_date} #{m.body} #{user}" )
+        end
+        puts "#{messages.size} pending messages"
       end
 
       desc "new", "Create a new message"
+      options :f => :numeric
       def new(body)
-        Telegram::Message.new(body: body).save
+        args = Telegram::Message.excute_options(options).merge(body: body)
+        Telegram::Message.new(args).save
         puts("Message created!")
+      end
+
+      desc "clear", "Clear all messages"
+      def clear
+        messages = Telegram::Message.not_acknowledged
+        messages.each do |m|
+          m.acknowledge!
+        end
+        puts "#{messages.size} messages cleared"
+      end
+
+      desc "install", "Installs telegram"
+      def install
+        Telegram::Util.setup_directories
+        Telegram::Util.create_config_file
       end
 
       desc "console", "runs an interactive console"
@@ -36,11 +66,10 @@ module Telegram
         loop do
           choose do |menu|
             menu.shell  = true
-            #say('Pending Acknowledgements ->')
             menu.prompt = "\nPlease choose an option.."
 
             Telegram::Message.not_acknowledged.each do |m|
-              display_body = "#{m.created_at.strftime('%m/%d/%Y')} - #{m.body}"
+              display_body = "#{m.date_time.strftime('%m/%d/%Y')} - #{m.body}"
               menu.choice(display_body) do
                 m.acknowledge!
                 say 'Message Acknowledged!'
@@ -48,6 +77,7 @@ module Telegram
             end
 
             if Telegram::Message.not_acknowledged.size > 1
+              messages = Telegram::Message.not_acknowledged
               menu.choice('All') do
                 messages.map(&:acknowledge!)
                 say 'All Messages Acknowledged!'
@@ -57,14 +87,7 @@ module Telegram
             menu.choice(:quit, "Exit program.") { exit }
           end
         end
-
       end
-
-
-
-
-
-
     end
   end
 end

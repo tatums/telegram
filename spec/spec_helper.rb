@@ -1,10 +1,13 @@
 require 'telegram'
 require 'pry'
 
-Telegram.configure do |config|
-  config.user      = "Tatum"
-  config.messages_path        = "spec/fixtures/telegram/messages"
-  config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
+
+if !defined?(Rails)
+  Telegram.configure do |config|
+    config.user      = "Tatum"
+    config.messages_path        = "spec/fixtures/telegram/messages"
+    config.acknowledgments_path = "spec/fixtures/telegram/acknowledgments"
+  end
 end
 
 
