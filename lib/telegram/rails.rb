@@ -1,12 +1,6 @@
 module Telegram
-  class PendingMessageError < StandardError
-    def initialize(count)
-      super "\n\n\n You have #{count} pending Messages please run telegram \n\n\n"
-    end
-  end
-  class Railtie < Rails::Railtie
+  class Rails < Rails::Railtie
     initializer "telegram.configure_rails_initialization" do |app|
-      Telegram::Util.setup_directories
       app.middleware.use Middleware
     end
 
@@ -17,6 +11,5 @@ module Telegram
         exit!
       end
     end
-
   end
 end

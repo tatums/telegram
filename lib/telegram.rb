@@ -1,5 +1,6 @@
-require 'yaml'
-require 'virtus'
+require "yaml"
+require "tzinfo"
+require "virtus"
 require "colorize"
 require "fileutils"
 
@@ -10,8 +11,8 @@ require "telegram/user"
 require "telegram/message"
 require "telegram/middleware"
 require "telegram/cli/app"
-
-
+require "telegram/pending_message"
+require "pry"
 module Telegram
 
   class << self
@@ -19,12 +20,26 @@ module Telegram
   end
 
   def self.configure
-    self.configuration ||= Configuration.new
-    yield(configuration)
+    self.configuration ||=
+      Configuration.new(messages_path: "telegram/messages",
+                        acknowledgments_path: "tmp/telegram/acknowledgments",
+                        timezone: "America/Chicago")
+    yield(configuration) if block_given?
   end
 
   class Configuration
-    attr_accessor :user, :messages_path, :acknowledgments_path
+    attr_accessor :user,
+                  :messages_path,
+                  :acknowledgments_path,
+                  :time_zone
+
+    def initialize(settings)
+      settings = YAML.load_file("config/telegram.yml") if File.exists?("config/telegram.yml")
+      @user = settings[:user] || ENV['USER'] || ENV['USERNAME']
+      @messages_path = settings[:messages_path]
+      @acknowledgments_path = settings[:acknowledgments_path]
+      @time_zone = settings[:timezone]
+    end
   end
 
   def self.root
@@ -42,9 +57,14 @@ module Telegram
   def self.acknowledgments_path
     configuration.acknowledgments_path
   end
+
+  def self.time_zone
+    configuration.time_zone
+  end
 end
 
-#Telegram::Util.setup_directories
+Telegram.configure
 
-require 'telegram/railtie' if defined?(Rails)
-
+if defined?(Rails)
+  require 'telegram/rails'
+end
