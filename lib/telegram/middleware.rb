@@ -8,8 +8,9 @@ module Telegram
     end
 
     def call(env)
+      messages = Message.not_acknowledged
       req = Rack::Request.new(env)
-      if req.post?
+      if messages.any? and req.post?
         file_name = req.params["message_file_name"]
         message = Message.all.find { |f| f.file_name == file_name }
         message.acknowledge!
@@ -17,7 +18,6 @@ module Telegram
         response.redirect "/"
         response.finish
       else
-        messages = Message.not_acknowledged
         if messages.any?
           items = messages.map do |m|
             "<li>
